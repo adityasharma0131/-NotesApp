@@ -84,7 +84,7 @@ img {
 
 /*=============== REUSABLE CSS CLASSES ===============*/
 .section {
-  padding: 4.5rem 0 2rem;
+  padding:3.8rem 0 2rem;
 }
 
 .section__title {
@@ -112,10 +112,15 @@ img {
   left: 0;
   width: 100%;
   background-color: var(--container-color);
+
+
+
   z-index: var(--z-fixed);
   transition: .4s;
-  border-style: solid;
-  border-color: #161616;
+  /* border-style: solid;
+  border-color: #161616; */
+  padding: .5rem;
+ 
 }
 
 /*=============== NAV ===============*/
@@ -124,17 +129,19 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* padding-top: 1.5rem; */
   
 }
 
-.nav__img {
-  width: 32px;
-  border-radius: 50%;
-}
+
 
 .nav__logo {
-  color: var(--title-color);
+  color: #fc6602;
+  background-color: #fbe5b8;
+  border-radius: 3px;
+  padding: 3px;
   font-weight: 600;
+  font-size: 3vh;
 }
 
 @media screen and (max-width: 767px) {
@@ -142,7 +149,7 @@ img {
     position: fixed;
     bottom: 0;
     left: 0;
-    background-color: var(--container-color);
+    background-color: var(--container-color);    
     box-shadow: 0 -1px 12px hsla(var(--hue), var(--sat), 15%, 0.15);
     width: 100%;
     height: 4rem;
@@ -211,6 +218,43 @@ img {
 .scroll-header {
   box-shadow: 0 1px 12px hsla(var(--hue), var(--sat), 15%, 0.15);
 }
+
+
+
+
+
+.bgbox{
+  position: relative;
+  color: white;
+  padding: 2rem;
+  margin: 0rem 1rem 2.5rem 1rem;
+  width: auto;
+  height: auto;
+  border-radius: 14px;
+
+
+  backdrop-filter: blur(21px) saturate(100%);
+  -webkit-backdrop-filter: blur(21px) saturate(100%);
+  background-color: rgba(255, 255, 255, 0.1);
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+
+
+
+
+
+
+
+
+
 
 /*=============== MEDIA QUERIES ===============*/
 /* For small devices */
