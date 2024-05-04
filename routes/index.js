@@ -4,13 +4,15 @@ var router = express.Router();
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("./users");
+const { isLoggedIn} = require('./checkAuth');
+
 /* GET home page. */
 
 router.get("/", function (req, res, next) {
   res.render("index", { title: "टिप्पणी - Notes App" });
 });
 
-router.get("/dashboard", function (req, res, next) {
+router.get("/dashboard", isLoggedIn ,function (req, res, next) {
   res.render("dashboard", { title: "टिप्पणी - Dashboard" });
 });
 
@@ -24,6 +26,7 @@ passport.use(
     },
 
     async function (accessToken, refreshToken, profile, done) {
+      console.log(profile)
       const newUser = {
         googleId: profile.id,
         displayName: profile.displayName,
@@ -66,6 +69,20 @@ router.get(
 router.get("/login-failure", (req, res) => {
   res.send("Something went wrong...");
 });
+
+
+router.get('/logout', (req,res) =>{
+  req.session.destroy(error =>{
+    if(error){
+      console.log(error);
+      res.send('Error Logging out');
+    } else {
+      res.redirect('/');
+    }
+  })
+
+});
+
 
 passport.serializeUser(function (user, done) {
   done(null, user.id);
