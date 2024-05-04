@@ -20,7 +20,11 @@ app.use(session({
   saveUninitialized: true,
   store: MongoStore.create({
     mongoUrl: 'mongodb+srv://adityasharma0431:anant99@cluster0.z5dehxj.mongodb.net/'
-  })
+  }),
+  // ,
+  // cookie: {
+  //   maxAge: new Date(Date.now()+ (3600000) )
+  // }
 }));
 
 // view engine setup
