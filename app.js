@@ -8,6 +8,20 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+const mongoose = require('mongoose');
+const session = require('express-session');
+const passport = require('passport');
+const MongoStore = require('connect-mongo');
+const router = require('./routes/index');
+
+app.use(session({
+  secret: 'your-secret-key', // Change this to a random string
+  resave: false,
+  saveUninitialized: true,
+  store: MongoStore.create({
+    mongoUrl: 'mongodb+srv://adityasharma0431:anant99@cluster0.z5dehxj.mongodb.net/'
+  })
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,10 +36,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+
+
+// app.use('/', require('./routes/auth'));
+// app.use('/', require('./routes/dashboard'));
+
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+
+
+
 
 // error handler
 app.use(function(err, req, res, next) {
