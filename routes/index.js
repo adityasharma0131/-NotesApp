@@ -81,7 +81,10 @@ router.get("/", function (req, res, next) {
 });
 
 router.get("/dashboard", isLoggedIn, (req, res) => {
-  res.render("dashboard", { title: "टिप्पणी - Dashboard" });
+  res.render("dashboard", { 
+    title: "टिप्पणी - Dashboard" ,
+    userName: req.user.firstName
+  });
 });
 
 // Google Login Route
