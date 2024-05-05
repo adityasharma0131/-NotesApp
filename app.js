@@ -1,31 +1,43 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+const passport = require('passport');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const mongoose = require('mongoose');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
-var app = express();
-const mongoose = require('mongoose');
-const session = require('express-session');
-const passport = require('passport');
-const MongoStore = require('connect-mongo');
 const router = require('./routes/index');
 
+var app = express();
+// app.use(session({
+//   secret: 'your-secret-key', // Change this to a random string
+//   resave: false,
+//   saveUninitialized: true,
+//   store: MongoStore.create({
+//     mongoUrl: 'mongodb+srv://adityasharma0431:anant99@cluster0.z5dehxj.mongodb.net/'
+//   }),
+//   // ,
+//   // cookie: {
+//   //   maxAge: new Date(Date.now()+ (3600000) )
+//   // }
+// }));
+
 app.use(session({
-  secret: 'your-secret-key', // Change this to a random string
+  secret: 'cat',
   resave: false,
   saveUninitialized: true,
+  cookie: { secure: false },
   store: MongoStore.create({
-    mongoUrl: 'mongodb+srv://adityasharma0431:anant99@cluster0.z5dehxj.mongodb.net/'
-  }),
-  // ,
-  // cookie: {
-  //   maxAge: new Date(Date.now()+ (3600000) )
-  // }
+        mongoUrl: 'mongodb+srv://adityasharma0431:anant99@cluster0.z5dehxj.mongodb.net/'
+      })
 }));
+
+
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -6,16 +6,11 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("./users");
 const { isLoggedIn } = require("./checkAuth");
 
+const Note  = require('./Notes');
+const mongoose = require('mongoose');
+
 /* GET home page. */
 
-router.get("/", function (req, res, next) {
-  res.render("index", { title: "टिप्पणी - Notes App" });
-});
-
-
-router.get('/dashboard', isLoggedIn, function (req, res) {
-  res.render("dashboard", { title: "टिप्पणी - Dashboard" });
-});
 
 passport.use(
   new GoogleStrategy(
@@ -25,6 +20,7 @@ passport.use(
       callbackURL: "http://localhost:3000/google/callback",
     },
     async function (accessToken, refreshToken, profile, done) {
+      console.log(profile)
       const newUser = {
         googleId: profile.id,
         displayName: profile.displayName,
@@ -32,7 +28,7 @@ passport.use(
         lastName: profile.name.familyName,
         profileImage: profile.photos[0].value,
       };
-
+      
       try {
         let user = await User.findOne({ googleId: profile.id });
         if (user) {
@@ -88,8 +84,8 @@ passport.serializeUser(function (user, done) {
 // Retrieve user data from session.
 // Original Code
 // passport.deserializeUser(function (id, done) {
-//   User.findById(id, function (err, user) {
-//     done(err, user);
+  //   User.findById(id, function (err, user) {
+    //     done(err, user);
 //   });
 // });
 
@@ -103,4 +99,12 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
+router.get("/", function (req, res, next) {
+  res.render("index", { title: "टिप्पणी - Notes App" });
+});
+
+
+router.get('/dashboard', isLoggedIn, (req, res) => {
+  res.render("dashboard", { title: "टिप्पणी - Dashboard" });
+});
 module.exports = router;
