@@ -1,7 +1,11 @@
-exports.isLoggedIn = function(req, res, next) {
-  if(req.user) {
-    next();
+// isLoggedIn middleware function for session authentication
+exports.isLoggedIn = (req, res, next) => {
+  // Check if user is authenticated
+  if (req.user) {
+    return next(); // User is authenticated, proceed to the next middleware
   } else {
-    res.status(401).send('hello jiii you are not allowed');
+    // User is not authenticated, redirect to login page or do something else
+    res.sendStatus(401);
   }
 };
+
