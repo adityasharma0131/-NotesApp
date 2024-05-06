@@ -88,20 +88,23 @@ router.get("/dashboard", isLoggedIn, async (req, res) => {
     res.render("dashboard", {
       title: "टिप्पणी - Dashboard",
       notes,
+      userID: req.user.user,
       userName: req.user.firstName,
     });
   } catch (error) {
-    console.log("err", + error);
-
+    console.log("err", +error);
   }
 });
 
 router.get("/dashboard/item/:id", isLoggedIn, async (req, res) => {
   try {
-    const note = await Note.findOne({ _id: req.params.id, user: req.user.id }).lean();
-    
+    const note = await Note.findOne({
+      _id: req.params.id,
+      user: req.user.id,
+    }).lean();
+
     if (note) {
-      res.render('view-notes', { 
+      res.render("view-notes", {
         title: "टिप्पणी - View Notes",
         noteID: req.params.id,
         note,
@@ -115,11 +118,79 @@ router.get("/dashboard/item/:id", isLoggedIn, async (req, res) => {
   }
 });
 
+router.post("/dashboard/item/update/:id", isLoggedIn, async (req, res) => {
+  try {
+    await Note.findOneAndUpdate(
+      { _id: req.params.id, user: req.user.id }, // Added user condition to ensure the note belongs to the user
+      { title: req.body.title, body: req.body.body, updatedAt: Date.now() },
+      { new: true } // Added { new: true } to return the updated document
+    );
+    res.redirect("/dashboard");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.post("/dashboard/item-delete/:id", isLoggedIn, async (req, res) => {
+  try {
+    await Note.deleteOne({ _id: req.params.id }).where({ user: req.user.id });
+    res.redirect("/dashboard");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.post("/dashboard/add", isLoggedIn, async (req, res) => {
+  res.render("addNote", {
+    title: "टिप्पणी - Add Notes"
+  });
+});
+
+
+router.post("/dashboard/addNewNote", isLoggedIn, async (req, res) => {
+  try {
+    req.body.user = req.user.id;
+    await Note.create(req.body);
+    res.redirect("/dashboard");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+
+router.get('/dashboard/search', isLoggedIn, async (req, res) => {
+  try {
+    res.render("dashboard/search", {
+      searchResults: "",
+    });
+  } catch (error) {}
+});
+
+router.post('/dashboard/searchSubmit', isLoggedIn, async (req, res) => {
+  try {
+    let searchTerm = req.body.searchTerm;
+    const searchNoSpecialChars = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "");
+
+    const searchResults = await Note.find({
+      $or: [
+        { title: { $regex: new RegExp(searchNoSpecialChars, "i") } },
+        { body: { $regex: new RegExp(searchNoSpecialChars, "i") } },
+      ],
+    }).where({ user: req.user.id });
+
+    res.render("dashboard/search", {
+      searchResults,
+      layout: "../views/layouts/dashboard",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 // router.get("/dashboard/item/:id", isLoggedIn, async (req, res) => {
 //   res.render("index", { title: "टिप्पणी - Notes App" });
 // });
-
 
 // Google Login Route
 router.get(

@@ -27,10 +27,9 @@
           <form method="POST" role="search" action="search">
             <div class="input-container">
 
-              <form role="search" method="POST" action="/dashboard/searchSubmit">
-                <input type="search" name="searchTerm" class="input" placeholder="Search...">
+              <form role="search" method="POST" action="/dashboard/search">
+                <input type="search" name="text" class="input" placeholder="search...">
               </form>
-              
 
 
               <span class="icon">
@@ -82,38 +81,18 @@
         </div>
 
         <div class="row">
-          <% if(notes.length > 0){
-            function formatDate(timestamp) {
-              const date = new Date(timestamp);
-              const options = { year: 'numeric', month: 'long', day: 'numeric' };
-              return date.toLocaleDateString('en-US', options);
-            }
-        
-            // Sort notes array by createdAt property in descending order
-            notes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        
-            for(let i = 0; i < notes.length; i++){ %>
-              <a href="dashboard/item/<%= notes[i]._id %>">
-                <article class='card'>
-                  <div class='temporary_text'><%= notes[i].title %></div>
-                  <div class='card_content'> 
-                    <span class='card_title'><%= notes[i].title %></span>
-                    <span class='card_subtitle'><%= formatDate(notes[i].createdAt) %></span>
-                    <p class='card_description'><%= notes[i].body %></p>
-                  </div>
-                </article>
-              </a>
-
-
-
-
-          <%  }} else { %>
-
-          <div class="row">
-            <h2>Okay Lets Start with your first note, Click on the add note button </h2>
-          </div>
-          <%  } %>
-
+                <% if(searchResults != '') { %>
+                  <% searchResults.forEach(function (note, index) { %>
+                    
+                    <a href="/dashboard/item/<%= note._id %>">
+                    <h4><%= note.title %></h4>
+                    </a>
+            
+                  <% }) %>
+                <% } else { %>
+                  <p>No items found.</p>
+                <% } %>
+            
 
         </div>
       </div>

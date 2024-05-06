@@ -2,6 +2,7 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const passport = require('passport');
+const methodOverride = require('method-override')
 const session = require('express-session');
 const MongoStore = require('connect-mongo'); // Fix: Pass session to connect-mongo
 const mongoose = require('mongoose');
@@ -36,6 +37,7 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
+app.use(methodOverride('_method'));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
