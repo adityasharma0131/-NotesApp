@@ -329,7 +329,7 @@ section {
   width: 100%;
   height: 40px;
   background-color: var(--white);
-  
+
   padding: 10px;
   border-radius: 1rem;
   transition: 0.2s linear;
@@ -349,11 +349,7 @@ section {
   animation: anim 1s linear infinite;
 }
 
-
-
-
-                        /* Dashboard Section */
-
+/* Dashboard Section */
 
 .dash_bgbox {
   position: relative;
@@ -367,11 +363,9 @@ section {
   border: 1px solid black;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-
 }
 
-
-.dash_header{
+.dash_header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -389,7 +383,9 @@ section {
   background-color: var(--white);
 }
 
-.button, .button__icon, .button__text {
+.button,
+.button__icon,
+.button__text {
   transition: all 0.3s;
 }
 
@@ -437,7 +433,6 @@ section {
   border: 1px solid var(--white);
 }
 
-
 @keyframes anim {
   0%,
   100% {
@@ -448,6 +443,101 @@ section {
     transform: translateY(calc(-50% - 5px)) scale(1.1);
   }
 }
+
+/* Card section starts here */
+
+.row {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.card {
+  position: relative;
+  width: 45vh;
+  height: 45vh;
+  color: var(--orange);
+  background: var(--white);
+  overflow: hidden;
+  border-radius: 20px;
+  border-style: solid;
+  border-color: var(--dark);
+}
+
+.temporary_text {
+  font-weight: bold;
+  font-size: 3vh;
+  padding: 15px 12px;
+  color: var(--dark);
+}
+/* .temporary_text img{
+  width:300px;
+  height: 300px;
+  object-fit: cover;
+
+} */
+
+.card_title {
+  font-weight: bold;
+}
+
+.card_content {
+  text-align: left;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  /* edit the width to fit card */
+  height: 80%;
+  width: 100%;
+  padding: 20px;
+  background: var(--dark);
+  border-top-left-radius: 20px;
+  /* edit here to change the height of the content box */
+  transform: translateY(150px);
+  transition: transform 0.25s;
+}
+
+.card_content::before {
+  content: "";
+  position: absolute;
+  top: -47px;
+  right: -45px;
+  width: 100px;
+  height: 100px;
+  transform: rotate(-175deg);
+  border-radius: 50%;
+  box-shadow: inset 48px 48px var(--dark);
+}
+
+.card_title {
+  color: var(--white);
+  line-height: 15px;
+}
+
+.card_subtitle {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.card_description {
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.card:hover .card_content {
+  transform: translateY(0);
+}
+
+.card:hover .card_description {
+  opacity: 1;
+  transition-delay: 0.25s;
+}
+
+
 
 @media screen and (max-width: 992px) {
   .marquee h3 {

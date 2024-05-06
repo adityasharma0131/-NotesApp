@@ -8,6 +8,7 @@ const { isLoggedIn } = require("./checkAuth");
 
 const Note = require("./Notes");
 const mongoose = require("mongoose");
+const Notes = require("./Notes");
 
 // Initialize Passport.js
 passport.use(
@@ -80,12 +81,45 @@ router.get("/", function (req, res, next) {
   res.render("index", { title: "टिप्पणी - Notes App" });
 });
 
-router.get("/dashboard", isLoggedIn, (req, res) => {
-  res.render("dashboard", { 
-    title: "टिप्पणी - Dashboard" ,
-    userName: req.user.firstName
-  });
+router.get("/dashboard", isLoggedIn, async (req, res) => {
+  try {
+    const notes = await Note.find({});
+
+    res.render("dashboard", {
+      title: "टिप्पणी - Dashboard",
+      notes,
+      userName: req.user.firstName,
+    });
+  } catch (error) {
+    console.log("err", + error);
+
+  }
 });
+
+router.get("/dashboard/item/:id", isLoggedIn, async (req, res) => {
+  try {
+    const note = await Note.findOne({ _id: req.params.id, user: req.user.id }).lean();
+    
+    if (note) {
+      res.render('view-notes', { 
+        title: "टिप्पणी - View Notes",
+        noteID: req.params.id,
+        note,
+      });
+    } else {
+      res.status(404).send("Note not found");
+    }
+  } catch (err) {
+    console.error("Error fetching note:", err);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+
+// router.get("/dashboard/item/:id", isLoggedIn, async (req, res) => {
+//   res.render("index", { title: "टिप्पणी - Notes App" });
+// });
+
 
 // Google Login Route
 router.get(
