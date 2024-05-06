@@ -6,7 +6,7 @@
 
 <p align="center"><img src="img/1.png" alt="ss"></p>
 <br>
-<p align="center"><img src="img/2.png" alt="ss"></p>
+<p align="center"><img src="img/2.png" alt="ss"></p> 
 <br>
 <p align="center"><img src="img/3.png" alt="ss"></p>
 <br>
